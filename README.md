@@ -15,12 +15,13 @@ The purpose of this project is to sample open source data, mainly from NovelUpda
   
 ## BI: Analytics & Reporting (Data Analytics)
 
-#### Objective
+#### Objective/KPI
 
 Develop SQL-based analytics to deliver detailed insights into:
-- **Analyze novel popularity**
+- **Analyse the impact of original language on novel popularity**
 - **Compare ratings across genres**
-- **Examine relationships between chapters, ratings, rankings, etc**
+- **Examine the relationships between release frequency, licensing, reader and chapter count**
+- **Explore the similarities between the top 100 novels**
 
 These insights can help publishers, authors, and webnovel platforms understand reader preferences, identify trends, and make more informed decisions about content opportunities. 
 
