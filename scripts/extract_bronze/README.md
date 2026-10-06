@@ -7,7 +7,8 @@
 **STEP 1: RUN THIS SCRIPT TO CREATE YOUR BRONZE LAYER IN YOUR SQL SERVER**
 ```sql
 /* Bronze layer: every column is text (NVARCHAR(MAX)) so loads never fail on
-   length or type. Cast and tighten types in the silver layer. */
+   length or type. */
+/* WARNING: PLEASE RUN THIS QUERY ON THE CORRECT DATABASE (DataWareHouseNovels) */
 
 IF OBJECT_ID('bronze.novelupdates', 'U') IS NOT NULL
     DROP TABLE bronze.novelupdates;
