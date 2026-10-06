@@ -7,6 +7,7 @@
 =============================================================
 
 **STEP 1: RUN THIS *ONCE* IN THE SQL SERVER**
+
 **NOTE:**
 - **PLEASE RUN THIS QUERY ON THE CORRECT DATABASE (DataWareHouseNovels)**
 - **THIS WILL CREATE THE BRONZE LAYER**
@@ -125,6 +126,7 @@ EOF
 ```
 
 **STEP 3: DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
+
 **NOTE:**
 - **YOU WILL HAVE TO FIND AND REPLACE `NEWNAME.csv` WITH EITHER `novelupdates_clean.csv` OR `webnovel_clean.csv`**
 - THIS WILL NOT WORK IF YOU DO NOT HAVE *sql-express* installed.
