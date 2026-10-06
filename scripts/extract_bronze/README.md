@@ -4,7 +4,7 @@
 
 =============================================================
 
-**STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" TO CREATE THE BRONZE LAYER THE SQL SERVER**
+**STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" ****ONCE**** IN THE SQL SERVER. THIS WILL CREATE THE BRONZE LAYER.**
 ```sql
 /* Bronze layer: every column is text (NVARCHAR(MAX)) so loads never fail on
    length or type. */
