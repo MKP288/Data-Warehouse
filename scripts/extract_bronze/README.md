@@ -122,3 +122,8 @@ EOF
 
 ```
 
+**STEP 2: DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
+```bash
+docker cp /tmp/webnovel_clean.csv sql-express:/tmp/webnovel_clean.csv
+docker exec -u 0 sql-express chmod 644 /tmp/webnovel_clean.csv
+```
