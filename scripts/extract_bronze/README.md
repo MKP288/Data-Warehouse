@@ -93,15 +93,16 @@ GO
 
 **STEP 2: DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
 
-**NOTE: 
-
-  **- YOU WILL HAVE TO FIND AND REPLACE *"FILEPATH"* WITH WHERE YOU STORED YOUR ".csv" FILE**
-  
-  **- YOU WILL HAVE TO FIND AND REPLACE *NEWNAME* WITH EITHER *novelupdates_clean.csv 29* OR *webnovel_clean.csv 30* DEPENDING ON WHICH ONE YOU STARTED ON FIRST**
+**NOTE:**
+- **YOU WILL HAVE TO FIND AND REPLACE `"FILEPATH"` WITH WHERE YOU STORED YOUR `".csv"` FILE**
+- **YOU WILL HAVE TO REPLACE `NEWNAME.csv` AND `COL_COUNT` WITH:**
+  - `novelupdates_clean.csv 29` (for NovelUpdates)
+  - `webnovel_clean.csv 30` (for Webnovel)
 
 ```bash
 # This cleans and prepares the ".csv" file
-python3 - "FILEPATH" /tmp/NEWNAME <<'EOF' # Replace "FILEPATH and NEWNAME here
+# Replace "FILEPATH", NEWNAME.csv, and COL_COUNT below:
+python3 - "FILEPATH" /tmp/NEWNAME.csv COL_COUNT <<'EOF'
 import csv, io, sys
 csv.field_size_limit(sys.maxsize)
 src, dst, ncols = sys.argv[1], sys.argv[2], int(sys.argv[3])
