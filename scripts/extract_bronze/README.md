@@ -143,27 +143,37 @@ docker exec -u 0 sql-express chmod 644 /tmp/NEWNAME.csv
 
 **STEP 4: BULK INSERT DATA INTO THE BRONZE LAYER**
 
-**NOTE:**
-- **EXECUTE THIS SCRIPT DIRECTLY INSIDE YOUR SQL EDITOR CONNECTED TO SQL SERVER**
-- **FIND AND REPLACE `DATASET` WITH EITHER `novelupdates` OR `webnovel`.**
-- **FIND AND REPLACE `NEWNAME.csv` WITH EITHER `novelupdates_clean.csv` OR `webnovel_clean.csv`.**
-- **MAKE SURE THE THEY MATCH (ex. `novelupdates` with `novelupdates_clean.csv`)**
+**NOTE: EXECUTE THIS SCRIPT DIRECTLY INSIDE YOUR SQL EDITOR CONNECTED TO SQL SERVER**
 
 ```sql
-DECLARE @ts  VARCHAR(20) = FORMAT(GETDATE(), 'yyyyMMdd_HHmmss');
+DECLARE @ts VARCHAR(20) = FORMAT(GETDATE(), 'yyyyMMdd_HHmmss');
 DECLARE @sql NVARCHAR(MAX);
 
--- Clear existing data in the landing table
-TRUNCATE TABLE bronze.DATASET;
+-- This loads novelupdates
+TRUNCATE TABLE bronze.novelupdates;
 
--- Dynamically construct and run the BULK INSERT command
-SET @sql = 'BULK INSERT bronze.DATASET
-    FROM ''/tmp/NEWNAME.csv''
+SET @sql = 'BULK INSERT bronze.novelupdates
+    FROM ''/tmp/novelupdates_clean.csv''
     WITH (
         FORMAT = ''CSV'',
         FIRSTROW = 2,
         FIELDQUOTE = ''"'',
-        ERRORFILE = ''/tmp/DATASET_err_' + @ts + '.log'',
+        ERRORFILE = ''/tmp/novelupdates_err_' + @ts + '.log'',
+        TABLOCK
+    );';
+
+EXEC (@sql);
+
+-- This loads webnovel
+TRUNCATE TABLE bronze.webnovel;
+
+SET @sql = 'BULK INSERT bronze.webnovel
+    FROM ''/tmp/webnovel_clean.csv''
+    WITH (
+        FORMAT = ''CSV'',
+        FIRSTROW = 2,
+        FIELDQUOTE = ''"'',
+        ERRORFILE = ''/tmp/webnovel_err_' + @ts + '.log'',
         TABLOCK
     );';
 
