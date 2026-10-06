@@ -132,6 +132,7 @@ EOF
 - **DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
 - **YOU WILL HAVE TO FIND AND REPLACE `NEWNAME.csv` WITH EITHER `novelupdates_clean.csv` OR `webnovel_clean.csv`**
 - THIS WILL NOT WORK IF YOU DO NOT HAVE *sql-express* installed.
+
 ```bash
 # Copy cleaned file into the container's /tmp directory
 docker cp /tmp/NEWNAME.csv sql-express:/tmp/NEWNAME.csv
@@ -167,4 +168,17 @@ SET @sql = 'BULK INSERT bronze.webnovel
 
 EXEC (@sql);
 ```
+
+**STEP 5: VERIFICATION**
+
+**NOTE:**
+- **EXECUTE THIS SCRIPT DIRECTLY INSIDE YOUR SQL EDITOR CONNECTED TO SQL SERVER**
+- **THIS STEP WILL ALLOW YOU TO VIEW THE DATASET INSIDE YOUR SQL SERVER**
+- **FIND AND REPLACE TABLE WITH EITHER `bronze.novelupdates` OR `bronze.webnovel`**
+
+```sql
+SELECT *
+FROM TABLE
+```
+
 
