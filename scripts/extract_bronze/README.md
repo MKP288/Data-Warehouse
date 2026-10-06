@@ -10,9 +10,11 @@
    length or type. */
 /* WARNING: PLEASE RUN THIS QUERY ON THE CORRECT DATABASE (DataWareHouseNovels) */
 
+-- WARNING: This will drop 'bronze.novelupdates' if it already exists
 IF OBJECT_ID('bronze.novelupdates', 'U') IS NOT NULL
     DROP TABLE bronze.novelupdates;
 
+-- This creates a new 'bronze.novelupdates' 
 CREATE TABLE bronze.novelupdates (
     novelupdates_id                          NVARCHAR(MAX),
     novelupdates_name                        NVARCHAR(MAX),
@@ -46,9 +48,11 @@ CREATE TABLE bronze.novelupdates (
 );
 GO
 
+-- WARNING: This will drop 'bronze.webnovel' if it already exists
 IF OBJECT_ID('bronze.webnovel', 'U') IS NOT NULL
     DROP TABLE bronze.webnovel;
 
+-- This creates a new 'bronze.webnovel' 
 CREATE TABLE bronze.webnovel (
     webnovel_novel_id                        NVARCHAR(MAX),
     webnovel_url                             NVARCHAR(MAX),
