@@ -12,6 +12,17 @@ The purpose of this project is to sample open source data, mainly from NovelUpda
 - **Integration**: Combine both sources into a single data model designed for analytical queries.
 - **Scope**: Focus on the latest dataset only; historization of data is not required.
 - **Documentation**: Provide clear documentation of the data model to support the analytics process.
+
+#### Tools
+- **Database Engine:** Microsoft SQL Server (running via Docker container `sql-express`):
+  - Microsoft SQL Server: https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+  - Docker: https://www.docker.com/
+- **IDE / Environment:** Visual Studio Code (with SQL Server / MSSQL extension)
+  - Visual Studio: https://visualstudio.microsoft.com/
+  - Find and download the MSSQL extension on Visual Studio.
+- **Runtimes & Tools:** 
+  - Python 3
+  - Terminal / Bash / Zsh Shell
   
 ## BI: Analytics & Reporting (Data Analytics)
 
