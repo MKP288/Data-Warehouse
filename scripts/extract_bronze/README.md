@@ -4,7 +4,8 @@
 
 =============================================================
 
-**STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" ****ONCE**** IN THE SQL SERVER. THIS WILL CREATE THE BRONZE LAYER.**
+**STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" ****ONCE**** IN THE SQL SERVER.**
+**THIS WILL CREATE THE BRONZE LAYER.**
 ```sql
 /* Bronze layer: every column is text (NVARCHAR(MAX)) so loads never fail on
    length or type. */
@@ -88,14 +89,27 @@ CREATE TABLE bronze.webnovel (
 GO
 ```
 
-STEP 2: RUN THIS SCRIPT IN THE TERMINAL/BASH. NOTE: YOU WILL HAVE TO REPLACE "FILEPATH".
+STEP 2: RUN THIS SCRIPT IN THE TERMINAL/BASH TWICE FOR BOTH ".csv" FILES.**
+**NOTE: YOU WILL HAVE TO FIND AND REPLACE "FILEPATH" WITH WHERE YOU STORED YOUR ".csv" FILE.**
 ```bash
-python3 - "FILEPATH" <<'EOF'
-import csv, sys
+-- This cleans and prepares the ".csv" file
+python3 - "FILEPATH" /tmp/webnovel_clean.csv 30 <<'EOF'
+import csv, io, sys
 csv.field_size_limit(sys.maxsize)
-with open(sys.argv[1], newline='', encoding='utf-8-sig') as f:
-    header = next(csv.reader(f))
-print(len(header), "columns")
+src, dst, ncols = sys.argv[1], sys.argv[2], int(sys.argv[3])
+raw = open(src, 'rb').read().replace(b'\x00', b'')
+text = raw.decode('utf-8-sig', errors='replace')
+skipped = 0
+with open(dst, 'w', newline='', encoding='utf-8') as out:
+    w = csv.writer(out, quoting=csv.QUOTE_ALL, lineterminator='\n')
+    for i, row in enumerate(csv.reader(io.StringIO(text, newline='')), start=1):
+        if i > 1 and len(row) != ncols:
+            skipped += 1
+            print("skipping record", i, "with", len(row), "fields")
+            continue
+        w.writerow(row)
+print("skipped:", skipped)
 EOF
+
 ```
 
