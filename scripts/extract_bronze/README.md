@@ -5,7 +5,9 @@
 =============================================================
 
 **STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" ****ONCE**** IN THE SQL SERVER.**
+
 **THIS WILL CREATE THE BRONZE LAYER.**
+
 ```sql
 /* Bronze layer: every column is text (NVARCHAR(MAX)) so loads never fail on
    length or type. */
@@ -90,7 +92,9 @@ GO
 ```
 
 **STEP 2: RUN THIS SCRIPT IN THE TERMINAL/BASH TWICE FOR BOTH ".csv" FILES.**
+
 **NOTE: YOU WILL HAVE TO FIND AND REPLACE "FILEPATH" WITH WHERE YOU STORED YOUR ".csv" FILE.**
+
 ```bash
 -- This cleans and prepares the ".csv" file
 python3 - "FILEPATH" /tmp/webnovel_clean.csv 30 <<'EOF'
