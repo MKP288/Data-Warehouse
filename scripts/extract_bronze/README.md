@@ -6,14 +6,14 @@
 
 =============================================================
 
-**STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" ****ONCE**** IN THE SQL SERVER**
-
-**THIS WILL CREATE THE BRONZE LAYER**
+**STEP 1: RUN THIS *ONCE* IN THE SQL SERVER**
+**NOTE:**
+- **PLEASE RUN THIS QUERY ON THE CORRECT DATABASE (DataWareHouseNovels) **
+- **THIS WILL CREATE THE BRONZE LAYER**
 
 ```sql
 /* Bronze layer: every column is text (NVARCHAR(MAX)) so loads never fail on
    length or type. */
-/* WARNING: PLEASE RUN THIS QUERY ON THE CORRECT DATABASE (DataWareHouseNovels) */
 
 -- WARNING: This will drop 'bronze.novelupdates' if it already exists
 IF OBJECT_ID('bronze.novelupdates', 'U') IS NOT NULL
