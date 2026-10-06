@@ -1,6 +1,6 @@
 =============================================================
 
-**FOLLOW THESE STEPS CAREFULLY!**
+**FOLLOW THESE STEPS CAREFULLY AND READ EVERY COMMENT!**
 
 =============================================================
 
