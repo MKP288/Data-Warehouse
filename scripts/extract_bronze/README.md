@@ -146,44 +146,119 @@ docker exec -u 0 sql-express chmod 644 /tmp/NEWNAME.csv
 **NOTE: EXECUTE THIS SCRIPT DIRECTLY INSIDE YOUR SQL EDITOR CONNECTED TO SQL SERVER**
 
 ```sql
--- This completely loads the bronze layer
-CREATE OR ALTER PROCEDURE bronze.load_bronze AS 
+/*
+===============================================================================
+Stored Procedure: Load Bronze Layer (Source -> Bronze)
+===============================================================================
+Script Purpose:
+    This stored procedure loads data into the 'bronze' schema from external CSV files.
+    It performs the following actions:
+    - Truncates the bronze tables before loading data.
+    - Uses the `BULK INSERT` command to load data from csv Files to bronze tables.
+
+Parameters:
+    None.
+    This stored procedure does not accept any parameters or return any values.
+
+Usage Example:
+    EXEC bronze.load_bronze;
+===============================================================================
+*/
+
+/* Loads the bronze layer from the cleaned CSVs already copied into the container.
+   Prerequisite: scripts/stage_csv.sh has been run for each source file.
+   Usage:  EXEC bronze.load_bronze;  */
+
+CREATE OR ALTER PROCEDURE bronze.load_bronze AS
 BEGIN
+    DECLARE @start_time       DATETIME,
+            @end_time         DATETIME,
+            @batch_start_time DATETIME = GETDATE(),
+            @batch_end_time   DATETIME = GETDATE(),
+            @ts               VARCHAR(20) = FORMAT(GETDATE(), 'yyyyMMdd_HHmmss'),
+            @sql              NVARCHAR(MAX);
 
-DECLARE @ts VARCHAR(20) = FORMAT(GETDATE(), 'yyyyMMdd_HHmmss');
-DECLARE @sql NVARCHAR(MAX);
+    BEGIN TRY
+        PRINT '=========================================================';
+        PRINT 'Loading bronze layer';
+        PRINT '=========================================================';
 
--- This loads novelupdates
-TRUNCATE TABLE bronze.novelupdates;
+        ---------------------------------------------------------------
+        -- this loads novelupdates
+        ---------------------------------------------------------------
+        PRINT '---------------------------------------------------------';
+        PRINT 'Loading novelupdates table';
+        PRINT '---------------------------------------------------------';
 
-SET @sql = 'BULK INSERT bronze.novelupdates
-    FROM ''/tmp/novelupdates_clean.csv''
-    WITH (
-        FORMAT = ''CSV'',
-        FIRSTROW = 2,
-        FIELDQUOTE = ''"'',
-        ERRORFILE = ''/tmp/novelupdates_err_' + @ts + '.log'',
-        TABLOCK
-    );';
+        SET @start_time = GETDATE();
 
-EXEC (@sql);
+        PRINT ' >> Truncating Table: bronze.novelupdates';
+        TRUNCATE TABLE bronze.novelupdates;
 
--- This loads webnovel
-TRUNCATE TABLE bronze.webnovel;
+        PRINT ' >> Inserting Data Into: bronze.novelupdates';
+        SET @sql = 'BULK INSERT bronze.novelupdates
+            FROM ''/tmp/novelupdates_clean.csv''
+            WITH (
+                FORMAT = ''CSV'',
+                FIRSTROW = 2,
+                FIELDQUOTE = ''"'',
+                ERRORFILE = ''/tmp/novelupdates_err_' + @ts + '.log'',
+                TABLOCK
+            );';
+        EXEC (@sql);
 
-SET @sql = 'BULK INSERT bronze.webnovel
-    FROM ''/tmp/webnovel_clean.csv''
-    WITH (
-        FORMAT = ''CSV'',
-        FIRSTROW = 2,
-        FIELDQUOTE = ''"'',
-        ERRORFILE = ''/tmp/webnovel_err_' + @ts + '.log'',
-        TABLOCK
-    );';
+        SET @end_time = GETDATE();
+        PRINT ' >> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds.';
 
-EXEC (@sql);
+        ---------------------------------------------------------------
+        -- this loads webnovel
+        ---------------------------------------------------------------
+        PRINT '---------------------------------------------------------';
+        PRINT 'Loading webnovel table';
+        PRINT '---------------------------------------------------------';
 
+        SET @start_time = GETDATE();
+
+        PRINT ' >> Truncating Table: bronze.webnovel';
+        TRUNCATE TABLE bronze.webnovel;
+
+        PRINT ' >> Inserting Data Into: bronze.webnovel';
+        SET @sql = 'BULK INSERT bronze.webnovel
+            FROM ''/tmp/webnovel_clean.csv''
+            WITH (
+                FORMAT = ''CSV'',
+                FIRSTROW = 2,
+                FIELDQUOTE = ''"'',
+                ERRORFILE = ''/tmp/webnovel_err_' + @ts + '.log'',
+                TABLOCK
+            );';
+        EXEC (@sql);
+
+        SET @end_time = GETDATE();
+        PRINT ' >> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds.';
+
+        ---------------------------------------------------------------
+        SET @batch_end_time = GETDATE();
+        PRINT '=========================================================';
+        PRINT 'Bronze layer load completed';
+        PRINT ' >> Total Duration: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds.';
+        PRINT '=========================================================';
+    END TRY
+
+    BEGIN CATCH
+        PRINT '=========================================================';
+        PRINT 'Error occurred during loading bronze layer';
+        PRINT 'Error Message: ' + ERROR_MESSAGE();
+        PRINT 'Error Number:  ' + CAST(ERROR_NUMBER() AS NVARCHAR);
+        PRINT 'Error State:   ' + CAST(ERROR_STATE() AS NVARCHAR);
+        PRINT '=========================================================';
+        THROW;  -- re-raise so callers/schedulers see the failure
+    END CATCH
 END
+GO
+
+EXEC bronze.load_bronze;
+GO
 ```
 
 **STEP 5: VERIFICATION**
