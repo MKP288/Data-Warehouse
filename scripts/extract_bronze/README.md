@@ -6,11 +6,11 @@
 
 =============================================================
 
-**STEP 1: RUN THIS *ONCE* IN THE SQL SERVER**
+**STEP 1: CREATING THE BRONZE LAYER**
 
 **NOTE:**
 - **PLEASE RUN THIS QUERY ON THE CORRECT DATABASE (DataWareHouseNovels)**
-- **THIS WILL CREATE THE BRONZE LAYER**
+- **RUN THIS *ONCE* IN THE SQL SERVER**
 
 ```sql
 /* Bronze layer: every column is text (NVARCHAR(MAX)) so loads never fail on
@@ -94,9 +94,10 @@ CREATE TABLE bronze.webnovel (
 GO
 ```
 
-**STEP 2: DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
+**STEP 2: PREPARING THE ".csv" FILES INDIVIDUALLY**
 
 **NOTE:**
+- **DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
 - **YOU WILL HAVE TO FIND AND REPLACE `"FILEPATH"` WITH WHERE YOU STORED YOUR `".csv"` FILE**
 - **YOU WILL HAVE TO REPLACE `NEWNAME.csv` AND `COL_COUNT` WITH:**
   - `novelupdates_clean.csv 29` (for NovelUpdates)
@@ -125,9 +126,10 @@ EOF
 
 ```
 
-**STEP 3: DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
+**STEP 3: COPY FILES INTO DOCKER CONTAINER AND SET PERMISSIONS**
 
 **NOTE:**
+- **DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
 - **YOU WILL HAVE TO FIND AND REPLACE `NEWNAME.csv` WITH EITHER `novelupdates_clean.csv` OR `webnovel_clean.csv`**
 - THIS WILL NOT WORK IF YOU DO NOT HAVE *sql-express* installed.
 ```bash
@@ -138,12 +140,12 @@ docker cp /tmp/NEWNAME.csv sql-express:/tmp/NEWNAME.csv
 docker exec -u 0 sql-express chmod 644 /tmp/NEWNAME.csv
 ```
 
-**STEP 4: BULK INSERT DATA INTO THE BRONZE LAYER (SQL)**
+**STEP 4: BULK INSERT DATA INTO THE BRONZE LAYER**
 
 **NOTE:**
-- Execute this script directly inside your SQL editor connected to SQL Server.
-- This script dynamically appends a timestamp to the error log file to avoid overwrite conflicts if previous errors exist.
-- Replace `webnovel` and `webnovel_clean.csv` with `novelupdates` and `novelupdates_clean.csv` when loading the second dataset.
+- **EXECUTE THIS SCRIPT DIRECTLY INSIDE YOUR SQL EDITOR CONNECTED TO SQL SERVER**
+- **THIS SCRIPT DYNAMICALLY APPENDS A TIMESTAMP TO THE ERROR LOG FILE TO AVOID OVERWRITE CONFLICTS IF PREVIOUS ERRORS EXIST**
+- **REPLACE WEBNOVEL AND WEBNOVEL_CLEAN.CSV WITH NOVELUPDATES AND NOVELUPDATES_CLEAN.CSV WHEN LOADING THE SECOND DATASET**
 
 ```sql
 DECLARE @ts  VARCHAR(20) = FORMAT(GETDATE(), 'yyyyMMdd_HHmmss');
