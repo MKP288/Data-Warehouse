@@ -88,4 +88,14 @@ CREATE TABLE bronze.webnovel (
 GO
 ```
 
+STEP 2: RUN THIS SCRIPT IN THE TERMINAL/BASH. NOTE: YOU WILL HAVE TO REPLACE "FILEPATH".
+```bash
+python3 - "FILEPATH" <<'EOF'
+import csv, sys
+csv.field_size_limit(sys.maxsize)
+with open(sys.argv[1], newline='', encoding='utf-8-sig') as f:
+    header = next(csv.reader(f))
+print(len(header), "columns")
+EOF
+```
 
