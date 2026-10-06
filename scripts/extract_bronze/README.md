@@ -1,8 +1,9 @@
 =============================================================
 
-            **FOLLOW THESE STEPS CAREFULLY!**
+**FOLLOW THESE STEPS CAREFULLY!**
 
 =============================================================
 
-**STEP 1: RUN THE SCRIPT CALLED "create_bronze_layer.sql"**
+**STEP 1: RUN THIS SCRIPT TO CREATE YOUR BRONZE LAYER IN YOUR SQL SERVER**
+
 
