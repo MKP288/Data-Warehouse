@@ -4,9 +4,9 @@
 
 =============================================================
 
-**STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" ****ONCE**** IN THE SQL SERVER.**
+**STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" ****ONCE**** IN THE SQL SERVER**
 
-**THIS WILL CREATE THE BRONZE LAYER.**
+**THIS WILL CREATE THE BRONZE LAYER**
 
 ```sql
 /* Bronze layer: every column is text (NVARCHAR(MAX)) so loads never fail on
@@ -91,13 +91,15 @@ CREATE TABLE bronze.webnovel (
 GO
 ```
 
-**STEP 2: RUN THIS SCRIPT IN THE TERMINAL/BASH TWICE FOR BOTH ".csv" FILES.**
+**STEP 2: DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
 
-**NOTE: YOU WILL HAVE TO FIND AND REPLACE "FILEPATH" WITH WHERE YOU STORED YOUR ".csv" FILE.**
+**NOTE: 
+  **- YOU WILL HAVE TO FIND AND REPLACE *"FILEPATH"* WITH WHERE YOU STORED YOUR ".csv" FILE**
+  **- YOU WILL HAVE TO FIND AND REPLACE *NEWNAME* WITH EITHER *novelupdates_clean.csv 29* OR *webnovel_clean.csv 30* DEPENDING ON WHICH ONE YOU STARTED ON FIRST**
 
 ```bash
 # This cleans and prepares the ".csv" file
-python3 - "FILEPATH" /tmp/webnovel_clean.csv 30 <<'EOF'
+python3 - "FILEPATH" /tmp/NEWNAME <<'EOF'
 import csv, io, sys
 csv.field_size_limit(sys.maxsize)
 src, dst, ncols = sys.argv[1], sys.argv[2], int(sys.argv[3])
