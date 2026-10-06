@@ -101,7 +101,7 @@ GO
 
 ```bash
 # This cleans and prepares the ".csv" file
-python3 - "FILEPATH" /tmp/NEWNAME <<'EOF'
+python3 - "FILEPATH" /tmp/NEWNAME <<'EOF' # Replace "FILEPATH and NEWNAME here
 import csv, io, sys
 csv.field_size_limit(sys.maxsize)
 src, dst, ncols = sys.argv[1], sys.argv[2], int(sys.argv[3])
