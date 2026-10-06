@@ -2,6 +2,8 @@
 
 **FOLLOW THESE STEPS CAREFULLY AND READ EVERY COMMENT!**
 
+**YOU DO NOT NEED TO RUN THE COMMENTS IN YOUR SCRIPTS**
+
 =============================================================
 
 **STEP 1: RUN THE SCRIPT "create_bronze_layer.sql" ****ONCE**** IN THE SQL SERVER**
@@ -122,8 +124,43 @@ EOF
 
 ```
 
-**STEP 2: DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
+**STEP 3: DO THIS STEP IN THE TERMINAL/BASH FOR BOTH ".csv" FILES**
+**NOTE:**
+- **YOU WILL HAVE TO FIND AND REPLACE `NEWNAME.csv` WITH EITHER `novelupdates_clean.csv` OR `webnovel_clean.csv`**
+- THIS WILL NOT WORK IF YOU DO NOT HAVE *sql-express* installed.
 ```bash
-docker cp /tmp/webnovel_clean.csv sql-express:/tmp/webnovel_clean.csv
-docker exec -u 0 sql-express chmod 644 /tmp/webnovel_clean.csv
+# Copy cleaned file into the container's /tmp directory
+docker cp /tmp/NEWNAME.csv sql-express:/tmp/NEWNAME.csv
+
+# Copy cleaned file into the container's /tmp directory
+docker exec -u 0 sql-express chmod 644 /tmp/NEWNAME.csv
 ```
+
+**STEP 4: BULK INSERT DATA INTO THE BRONZE LAYER (SQL)**
+
+**NOTE:**
+- Execute this script directly inside your SQL editor connected to SQL Server.
+- This script dynamically appends a timestamp to the error log file to avoid overwrite conflicts if previous errors exist.
+- Replace `webnovel` and `webnovel_clean.csv` with `novelupdates` and `novelupdates_clean.csv` when loading the second dataset.
+
+```sql
+DECLARE @ts  VARCHAR(20) = FORMAT(GETDATE(), 'yyyyMMdd_HHmmss');
+DECLARE @sql NVARCHAR(MAX);
+
+-- Clear existing data in the landing table
+TRUNCATE TABLE bronze.webnovel;
+
+-- Dynamically construct and run the BULK INSERT command
+SET @sql = 'BULK INSERT bronze.webnovel
+    FROM ''/tmp/webnovel_clean.csv''
+    WITH (
+        FORMAT = ''CSV'',
+        FIRSTROW = 2,
+        FIELDQUOTE = ''"'',
+        ERRORFILE = ''/tmp/webnovel_err_' + @ts + '.log'',
+        TABLOCK
+    );';
+
+EXEC (@sql);
+```
+
