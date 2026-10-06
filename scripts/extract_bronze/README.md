@@ -146,6 +146,10 @@ docker exec -u 0 sql-express chmod 644 /tmp/NEWNAME.csv
 **NOTE: EXECUTE THIS SCRIPT DIRECTLY INSIDE YOUR SQL EDITOR CONNECTED TO SQL SERVER**
 
 ```sql
+-- This completely loads the bronze layer
+CREATE OR ALTER PROCEDURE bronze.load_bronze AS 
+BEGIN
+
 DECLARE @ts VARCHAR(20) = FORMAT(GETDATE(), 'yyyyMMdd_HHmmss');
 DECLARE @sql NVARCHAR(MAX);
 
@@ -178,6 +182,8 @@ SET @sql = 'BULK INSERT bronze.webnovel
     );';
 
 EXEC (@sql);
+
+END
 ```
 
 **STEP 5: VERIFICATION**
