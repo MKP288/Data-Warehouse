@@ -96,7 +96,7 @@ GO
 **NOTE: YOU WILL HAVE TO FIND AND REPLACE "FILEPATH" WITH WHERE YOU STORED YOUR ".csv" FILE.**
 
 ```bash
--- This cleans and prepares the ".csv" file
+# This cleans and prepares the ".csv" file
 python3 - "FILEPATH" /tmp/webnovel_clean.csv 30 <<'EOF'
 import csv, io, sys
 csv.field_size_limit(sys.maxsize)
