@@ -145,24 +145,25 @@ docker exec -u 0 sql-express chmod 644 /tmp/NEWNAME.csv
 
 **NOTE:**
 - **EXECUTE THIS SCRIPT DIRECTLY INSIDE YOUR SQL EDITOR CONNECTED TO SQL SERVER**
-- **THIS SCRIPT DYNAMICALLY APPENDS A TIMESTAMP TO THE ERROR LOG FILE TO AVOID OVERWRITE CONFLICTS IF PREVIOUS ERRORS EXIST**
-- **REPLACE WEBNOVEL AND WEBNOVEL_CLEAN.CSV WITH NOVELUPDATES AND NOVELUPDATES_CLEAN.CSV WHEN LOADING THE SECOND DATASET**
+- **FIND AND REPLACE `DATASET` WITH EITHER `novelupdates` OR `webnovel`.**
+- **FIND AND REPLACE `NEWNAME.csv` WITH EITHER `novelupdates_clean.csv` OR `webnovel_clean.csv`.**
+- **MAKE SURE THE THEY MATCH (ex. `novelupdates` with `novelupdates_clean.csv`)**
 
 ```sql
 DECLARE @ts  VARCHAR(20) = FORMAT(GETDATE(), 'yyyyMMdd_HHmmss');
 DECLARE @sql NVARCHAR(MAX);
 
 -- Clear existing data in the landing table
-TRUNCATE TABLE bronze.webnovel;
+TRUNCATE TABLE bronze.DATASET;
 
 -- Dynamically construct and run the BULK INSERT command
-SET @sql = 'BULK INSERT bronze.webnovel
-    FROM ''/tmp/webnovel_clean.csv''
+SET @sql = 'BULK INSERT bronze.DATASET
+    FROM ''/tmp/NEWNAME.csv''
     WITH (
         FORMAT = ''CSV'',
         FIRSTROW = 2,
         FIELDQUOTE = ''"'',
-        ERRORFILE = ''/tmp/webnovel_err_' + @ts + '.log'',
+        ERRORFILE = ''/tmp/DATASET_err_' + @ts + '.log'',
         TABLOCK
     );';
 
