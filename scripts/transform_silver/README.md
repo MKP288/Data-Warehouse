@@ -12,8 +12,7 @@
 - **PLEASE RUN THIS QUERY ON THE CORRECT DATABASE (DataWareHouseNovels)**
 - **RUN THIS *ONCE* IN THE SQL SERVER**
 
-```
-sql
+```sql
 /* Silver layer: every column is text (NVARCHAR(MAX)) so loads never fail on
    length or type. */
 
