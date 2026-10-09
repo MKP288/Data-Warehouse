@@ -24,7 +24,7 @@ The purpose of this project is to sample open source data, mainly from NovelUpda
   - Python 3
   - Terminal / Bash / Zsh Shell
   
-## BI: Analytics & Reporting (Data Analytics)
+## Analytics & Reporting (Data Analytics)
 
 #### Objective/KPI
 
