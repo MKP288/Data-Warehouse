@@ -42,6 +42,7 @@ These insights can help publishers, authors, and webnovel platforms understand r
 
 This project utilizes datasets compiled and maintained by the following contributors:
 
+- These two files are comma-delimited CSVs with a header row.
 - **Novel Dataset:** Compiled by [Marcus Kalander](https://github.com/shaido987), [Felix](https://github.com/MajesticFelix), and [Kevin Nguyen](https://github.com/knguy22) via the [shaido987/novel-dataset](https://github.com/shaido987/novel-dataset) repository.
 - **Web/Light Novel Dataset:** Compiled by [Prem Shinde](https://www.kaggle.com/premshinde) via [Kaggle](https://www.kaggle.com/datasets/premshinde/weblight-novel-dataset).
 
