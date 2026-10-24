@@ -323,3 +323,28 @@ GO
 EXEC silver.transform_silver;
 GO
 ```
+**STEP 4: TRANSFORMING TO SILVER**
+
+```sql
+-- duplicate keys in webnovel
+SELECT wn_key, COUNT(*) AS cnt, STRING_AGG(wn_name, ' | ') AS names
+FROM silver.webnovel
+WHERE wn_key IS NOT NULL
+GROUP BY wn_key HAVING COUNT(*) > 1;
+
+-- duplicate keys in novelupdates
+SELECT nu_key, COUNT(*) AS cnt, STRING_AGG(nu_name, ' | ') AS names
+FROM silver.novelupdates
+WHERE nu_key IS NOT NULL
+GROUP BY nu_key HAVING COUNT(*) > 1;
+
+-- NULL keys (non-English-script titles)
+SELECT COUNT(*) AS wn_null_keys FROM silver.webnovel     WHERE wn_key IS NULL;
+SELECT COUNT(*) AS nu_null_keys FROM silver.novelupdates WHERE nu_key IS NULL;
+
+SELECT nu_key, nu_name, nu_st_year, nu_type, nu_genres, nu_chap_cur
+FROM silver.novelupdates
+WHERE nu_key IN ('healer','darkfire','hotsummer','littlefool','obsession','marriageofconvenience',
+                 'byebye','lovesick','dungeonfarm','god')
+ORDER BY nu_key;
+```
