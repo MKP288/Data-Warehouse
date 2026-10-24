@@ -122,7 +122,7 @@ FROM bronze.webnovel
 ```
 
 **STEP 3: HELPERS**
-```
+```sql
 /*
 ===============================================================================
 Functions: Silver Layer Helpers
@@ -178,8 +178,7 @@ GO
 ```
 
 **STEP 4: TRANSFORMING TO SILVER**
-sql
-```
+```sql
 /*
 ===============================================================================
 Stored Procedure: Transform Silver Layer (Bronze -> Silver)
